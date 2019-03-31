@@ -9,25 +9,50 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    var currentValue = 50
+    var targetValue = 0
+    
+    
+    @IBOutlet weak var slider: UISlider!// 초록색 중의 -- value값 가짐
+    @IBOutlet weak var targetLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        startNewRound()
     }
     @IBAction func showAlert(){
+        let message = "The value of the slider is: \(currentValue)"+"\nThe target value is: \(targetValue)"
         // 버튼 눌렀을때 나오는 화면
         let alert = UIAlertController(title: "Hello, World",
-                                      message: "This is my first app!",
+                                      message: message,
                                       preferredStyle: .alert)
         //밑에 버튼 부분
-        let action = UIAlertAction(title: "Awesome", style: .default,
+        let action = UIAlertAction(title: "O.K", style: .default,
                                    handler: nil)
         
         alert.addAction(action)
         
         present(alert, animated: true, completion: nil)
         
+        startNewRound()// 버튼 누를떄 마다 실행되게함
     }
-
+    @IBAction func sliderMoved(_ slider:UISlider){
+        currentValue = lroundf(slider.value)// score of slider
+        print("The value of the slider is now: \(currentValue)")
+    }
+    
+    func startNewRound(){
+        targetValue = Int.random(in: 1...100)
+        currentValue = 50
+        slider.value = Float(currentValue)
+        updateLabels()
+    }
+    
+    func updateLabels(){
+        targetLabel.text = String(targetValue)
+    }
 }
+    
+
 
