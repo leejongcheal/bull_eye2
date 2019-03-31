@@ -22,32 +22,54 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        startNewRound()
+        //startNewRound()
+        startNewGame()
     }
     @IBAction func showAlert(){
         let difference = abs(targetValue - currentValue)
-        let points = 100 - difference
-        score += points
+        var points = 100 - difference
         let message = "You scored \(points) point"
+        
+        let title: String
+        if difference == 0 {
+            title = "Perfect!"
+            points += 100
+        } else if difference < 5 {
+            title = "You almost had it!"
+            if difference == 1 {
+                points += 50
+            }
+        } else if difference < 10 {
+            title = "Pretty good!"
+        } else {
+            title = "Not even close..."
+        }
+        score += points
+        
         // 버튼 눌렀을때 나오는 화면
         let alert = UIAlertController(title: "Hello, World",
                                       message: message,
                                       preferredStyle: .alert)
         //밑에 버튼 부분
-        let action = UIAlertAction(title: "O.K", style: .default,
-                                   handler: nil)
+        let action = UIAlertAction(title: title, style: .default,
+                                   handler: {_ in self.startNewRound()
+                                    })
         
         alert.addAction(action)
         
         present(alert, animated: true, completion: nil)
         
-        startNewRound()// 버튼 누를떄 마다 실행되게함
+        //startNewRound()// 버튼 누를떄 마다 실행되게함
     }
     @IBAction func sliderMoved(_ slider:UISlider){
         currentValue = lroundf(slider.value)// score of slider
         print("The value of the slider is now: \(currentValue)")
     }
-    
+    @IBAction func startNewGame(){
+        round = 0
+        score = 0
+        startNewRound()
+    }
     func startNewRound(){
         round += 1
         targetValue = Int.random(in: 1...100)
