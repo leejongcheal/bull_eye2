@@ -12,8 +12,11 @@ class ViewController: UIViewController {
     
     var currentValue = 50
     var targetValue = 0
+    var score = 0
     
     
+    @IBOutlet weak var roundLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var slider: UISlider!// 초록색 중의 -- value값 가짐
     @IBOutlet weak var targetLabel: UILabel!
     override func viewDidLoad() {
@@ -22,7 +25,10 @@ class ViewController: UIViewController {
         startNewRound()
     }
     @IBAction func showAlert(){
-        let message = "The value of the slider is: \(currentValue)"+"\nThe target value is: \(targetValue)"
+        let difference = abs(targetValue - currentValue)
+        let points = 100 - difference
+        score += points
+        let message = "You scored \(points) point"
         // 버튼 눌렀을때 나오는 화면
         let alert = UIAlertController(title: "Hello, World",
                                       message: message,
@@ -51,6 +57,8 @@ class ViewController: UIViewController {
     
     func updateLabels(){
         targetLabel.text = String(targetValue)
+        scoreLabel.text = String(score)
+        
     }
 }
     
